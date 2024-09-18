@@ -34,27 +34,32 @@
             }
             
             const materia = { nombre, cantidad };
-            agregarMateria(materia);
+            
+            fetch('/materias', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(materia)
+            }).then(response => response.json())
+              .then(data => {
+                  agregarMateria(data);
+              });
         });
-
-        const materias = [];
-
+    
         function agregarMateria(materia) {
-            materias.push(materia);
-            mostrarMaterias();
+            fetch('/materias')
+                .then(response => response.json())
+                .then(materias => {
+                    const listaMaterias = document.getElementById('listaMaterias');
+                    listaMaterias.innerHTML = '';
+                    materias.forEach((materia, index) => {
+                        const li = document.createElement('li');
+                        li.textContent = `${materia.nombre} - ${materia.cantidad} estudiantes`;
+                        listaMaterias.appendChild(li);
+                    });
+                });
         }
-
-        function mostrarMaterias() {
-            const listaMaterias = document.getElementById('listaMaterias');
-            listaMaterias.innerHTML = '';
-            materias.forEach(materia => {
-                const li = document.createElement('li');
-                li.textContent = `${materia.nombre} - ${materia.cantidad} estudiantes`;
-                listaMaterias.appendChild(li);
-            });
-        }
-
-        mostrarMaterias();
-    </script>
+    
+        agregarMateria(); // Cargar materias al inicio
+    </script>    
 </body>
 </html>
