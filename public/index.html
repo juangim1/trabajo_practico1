@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materias ISTIC</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Ingresar Materias y Cantidad de Estudiantes</h1>
+        <form id="materiasForm">
+            <label for="nombre">Nombre de la Materia:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="cantidad">Cantidad de Estudiantes:</label>
+            <input type="number" id="cantidad" name="cantidad" min="0" max="100" required>
+
+            <button type="submit">Agregar Materia</button>
+        </form>
+        <h2>Listado de Materias</h2>
+        <ul id="listaMaterias"></ul>
+    </div>
+    <script>
+        document.getElementById('materiasForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value;
+            const cantidad = parseInt(document.getElementById('cantidad').value);
+            
+            if (cantidad < 0 || cantidad > 100) {
+                alert('La cantidad de estudiantes debe estar entre 0 y 100.');
+                return;
+            }
+            
+            const materia = { nombre, cantidad };
+            agregarMateria(materia);
+        });
+
+        const materias = [];
+
+        function agregarMateria(materia) {
+            materias.push(materia);
+            mostrarMaterias();
+        }
+
+        function mostrarMaterias() {
+            const listaMaterias = document.getElementById('listaMaterias');
+            listaMaterias.innerHTML = '';
+            materias.forEach(materia => {
+                const li = document.createElement('li');
+                li.textContent = `${materia.nombre} - ${materia.cantidad} estudiantes`;
+                listaMaterias.appendChild(li);
+            });
+        }
+
+        mostrarMaterias();
+    </script>
+</body>
+</html>
