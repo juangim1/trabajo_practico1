@@ -35,31 +35,47 @@
             
             const materia = { nombre, cantidad };
             
-            fetch('/materias', {
+            fetch('http://localhost:3000/materias', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(materia)
             }).then(response => response.json())
               .then(data => {
-                  agregarMateria(data);
+                  actualizarListaMaterias(data);
+                  document.getElementById('materiasForm').reset();  
               });
         });
     
-        function agregarMateria(materia) {
-            fetch('/materias')
-                .then(response => response.json())
-                .then(materias => {
-                    const listaMaterias = document.getElementById('listaMaterias');
-                    listaMaterias.innerHTML = '';
-                    materias.forEach((materia, index) => {
-                        const li = document.createElement('li');
-                        li.textContent = `${materia.nombre} - ${materia.cantidad} estudiantes`;
-                        listaMaterias.appendChild(li);
-                    });
-                });
+        function actualizarListaMaterias(materias) {
+            const listaMaterias = document.getElementById('listaMaterias');
+            listaMaterias.innerHTML = '';
+            materias.forEach(materia => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${materia.nombre} - ${materia.cantidad} estudiantes
+                    <button onclick="eliminarMateria(${materia.id})">Eliminar</button>
+                `;
+                listaMaterias.appendChild(li);
+            });
         }
     
-        agregarMateria(); // Cargar materias al inicio
+        function cargarMaterias() {
+            fetch('http://localhost:3000/materias')
+                .then(response => response.json())
+                .then(materias => {
+                    actualizarListaMaterias(materias);
+                });
+        }
+        
+        function eliminarMateria(id) {
+            fetch(`http://localhost:3000/materias/${id}`, {
+                method: 'DELETE'
+            }).then(() => {
+                cargarMaterias(); // Recargar la lista de materias después de eliminar
+            });
+        }
+    
+        cargarMaterias(); // Cargar materias al inicio
     </script>    
 </body>
 </html>

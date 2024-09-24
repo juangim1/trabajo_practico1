@@ -2,7 +2,7 @@
   "name": "trabajo_practico1",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
@@ -10,7 +10,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "nodemon": "^3.1.5"
+  },
+  "dependencies": {
+    "trabajo_practico1": "file:"
   }
 }
