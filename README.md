@@ -33,7 +33,7 @@ En esta sección se documentan los casos de prueba para validar las funcionalida
   - Ejemplo: 
     - "Matemáticas - 30 estudiantes"
     - "Física - 25 estudiantes"
-    - "Química - 20 estudiantes"
+    - "Química - 30 estudiantes"
 
 ![Captura de pantalla del listado de materias](images/captura4.png)
 
