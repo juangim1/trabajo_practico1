@@ -50,3 +50,9 @@ En esta sección se documentan los casos de prueba para validar las funcionalida
   - La lista debe actualizarse correctamente.
 
   ![Captura de pantalla de la eliminación de materia](images/captura5.png) ![Captura de pantalla del agregar materia](images/captura3.png) ![Captura de pantalla del agregar materia](images/captura4.png)
+
+  ### Reflexiones
+  
+  Durante el desarrollo de la aplicación, aprendí mucho sobre cómo gestionar datos en un entorno de servidor utilizando Node.js. Inicialmente, me resultó complicado entender cómo manejar las solicitudes HTTP y cómo estructurar mis rutas para que fueran eficientes. Al principio, encontré dificultades al intentar implementar las funciones para agregar, listar y eliminar materias, especialmente al mantener el estado de los datos (como los IDs de las materias) de manera consistente.
+
+  Otro aspecto importante en el que trabajé fue la creación de una interfaz de usuario atractiva y funcional. Al principio, mi diseño era bastante simple y carecía de estilo, lo que no proporcionaba la mejor experiencia para el usuario. Me di cuenta de que una buena interfaz no solo mejora la estética de la aplicación, sino que también facilita la interacción del usuario con ella.
