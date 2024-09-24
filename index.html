@@ -71,11 +71,11 @@
             fetch(`http://localhost:3000/materias/${id}`, {
                 method: 'DELETE'
             }).then(() => {
-                cargarMaterias(); // Recargar la lista de materias después de eliminar
+                cargarMaterias(); 
             });
         }
     
-        cargarMaterias(); // Cargar materias al inicio
+        cargarMaterias(); 
     </script>    
 </body>
 </html>
