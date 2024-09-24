@@ -17,7 +17,7 @@ En esta sección se documentan los casos de prueba para validar las funcionalida
   - La materia "Matemáticas" con 30 estudiantes se agrega a la lista de materias.
   - La lista muestra: "Matemáticas - 30 estudiantes".
 
-![Captura de pantalla del agregar materia](images/captura1.png)
+![Captura de pantalla del agregar materia](images/captura1.png) 
 
 
 ### 2. Listar Materias
@@ -49,4 +49,4 @@ En esta sección se documentan los casos de prueba para validar las funcionalida
   - La materia "Historia" ya no debe aparecer en la lista de materias.
   - La lista debe actualizarse correctamente.
 
-  ![Captura de pantalla de la eliminación de materia](images/captura5.png)
+  ![Captura de pantalla de la eliminación de materia](images/captura5.png) ![Captura de pantalla del agregar materia](images/captura3.png) ![Captura de pantalla del agregar materia](images/captura4.png)
