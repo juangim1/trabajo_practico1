@@ -14,6 +14,7 @@
     "nodemon": "^3.1.5"
   },
   "dependencies": {
+    "sequelize": "^6.37.3",
     "trabajo_practico1": "file:"
   }
 }

@@ -6,6 +6,20 @@ const path = require('path');
 let materias = []; 
 let nextId = 1; 
 
+const sequelize = require('./alumnos_db');
+
+const Materia = require('./models/Materias');
+// Sincronizar el modelo con la base de datos (crea la tabla si no
+
+sequelize.sync()
+.then(() => {
+console.log('Base de datos sincronizada.');
+})
+.then()
+.catch(err => {
+console.error('Error al guardar la materia:', err);
+});
+
 const servidor = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
     const method = req.method;
