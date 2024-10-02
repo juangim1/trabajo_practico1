@@ -8,7 +8,7 @@ let nextId = 1;
 
 const sequelize = require('./alumnos_db');
 
-const Materia = require('./models/Materias');
+const Materia = require('./models/Materia');
 // Sincronizar el modelo con la base de datos (crea la tabla si no
 
 sequelize.sync()
