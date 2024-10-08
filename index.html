@@ -18,7 +18,6 @@
 
             <button type="submit">Agregar Materia</button>
         </form>
-        <button id="eliminarTodas">Eliminar Todas las Materias</button>
         <h2>Listado de Materias</h2>
         <ul id="listaMaterias"></ul>
     </div>
@@ -46,15 +45,7 @@
                   document.getElementById('materiasForm').reset();  
               });
         });
-
-        document.getElementById('eliminarTodas').addEventListener('click', function() {
-            fetch('http://localhost:3000/materias', {
-                method: 'DELETE'
-            }).then(() => {
-                cargarMaterias(); 
-            });
-        });
-
+    
         function actualizarListaMaterias(materias) {
             const listaMaterias = document.getElementById('listaMaterias');
             listaMaterias.innerHTML = '';
@@ -67,7 +58,7 @@
                 listaMaterias.appendChild(li);
             });
         }
-
+    
         function cargarMaterias() {
             fetch('http://localhost:3000/materias')
                 .then(response => response.json())
@@ -83,7 +74,7 @@
                 cargarMaterias(); 
             });
         }
-
+    
         cargarMaterias(); 
     </script>    
 </body>
