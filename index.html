@@ -54,6 +54,7 @@
                 li.innerHTML = `
                     ${materia.nombre} - ${materia.cantidad} estudiantes
                     <button onclick="eliminarMateria(${materia.id})">Eliminar</button>
+                    <button onclick="actualizarrMateria(${materia.id})">Actualizar</button>
                 `;
                 listaMaterias.appendChild(li);
             });
@@ -70,6 +71,14 @@
         function eliminarMateria(id) {
             fetch(`http://localhost:3000/materias/${id}`, {
                 method: 'DELETE'
+            }).then(() => {
+                cargarMaterias(); 
+            });
+        }
+
+        function actualizarMateria(id) {
+            fetch(`http://localhost:3000/materias/${id}`, {
+                method: 'PUT'
             }).then(() => {
                 cargarMaterias(); 
             });

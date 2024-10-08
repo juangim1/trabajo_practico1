@@ -25,7 +25,7 @@ const servidor = http.createServer((req, res) => {
     const method = req.method;
     
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PUT,DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (method === 'OPTIONS') {
@@ -56,10 +56,21 @@ const servidor = http.createServer((req, res) => {
         });
     }
 
+    //uso de findAll() para listar todas las materias en lugar de usar el arrray
     else if (method === "GET" && parsedUrl.pathname === "/materias") {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(materias));
+        Materia.findAll()
+         .then(materias => {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(materias));
+         })
+         .catch(err => { //control mensajes de error... esto puede no ir
+            console.error('');
+            res.writeHead(500,{'Content-Type':'applicaiont/json'});
+            res.end(JSON.stringify({message:"Error al obtener materias"}))
+         });
+        
     }
+
     else if (method === "GET" && parsedUrl.pathname.startsWith("/materias/")) {
         const id = parseInt(parsedUrl.pathname.split("/")[2]);
         const materia = materias.find(m => m.id === id);
@@ -71,26 +82,71 @@ const servidor = http.createServer((req, res) => {
             res.end(JSON.stringify({ message: "Materia no encontrada" }));
         }
     }
-    
+    //actualizar o editar materia
+    else if (method==="PUT" && parsedUrl.pathname.startsWith("/materias/")){
+        const id =parseInt(parsedUrl,pathname.split('/')[2]);
+        let body='';
+        req.on('data',chuk => {
+            body+=chunk.toString();// obtenemos la informacion por partes con el chunk y lo ponemos en le cuerpo de la solicitud
+        });
+
+        req.on('end',() => {
+            const registroActualizado = JSON.parse(body); // 
+
+            Materia.update(registroActualizado,{ where: {id:id}})
+                .then (([filaActualizada]) => {
+                    if (filaActualizada>0) {//Si se actualizo el registro
+                        return Materia.findByPk(id); //se devuelve para ver los datos actualizados
+                    } else {//si no encontro una materia para actualizar
+                        res.writeHead(404,{ 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ message: "Materia no encontrada" }))
+                    }
+                })
+                .then (materiaActualizada => {//recibe el resultado de findByPk(id) 
+                    if (materiaActualizada){ // se actualizo OK un registro, entonces envia el registro actualizado y avisa OK
+                        res.writeHead(200,{'Content-Type:':'application/json'});
+                        res.end(JSON.stringify(materiaActualizada));
+                    }
+                })
+                .catch(err => { //control mensajes de error... esto puede no ir
+                    console.error('');
+                    res.writeHead(500,{'Content-Type':'applicaiont/json'});
+                    res.end(JSON.stringify({message:"Error del servidor"}))
+                 });
+            
+        })
+
+    }
+    //Borrado de materia
     else if (method === "DELETE" && parsedUrl.pathname.startsWith("/materias/")) {
         const id = parseInt(parsedUrl.pathname.split("/")[2]);
-        materias = materias.filter(m => m.id !== id);
+        //materias = materias.filter(m => m.id !== id);
         
-        
-        if (materias.length === 0) {
-            nextId = 1;
-        }
+        materias.destroy ({where:{id:id}}) 
+            .then (borrado => { //si encuenta el id en la BBDD pone borrado=1, sino lo deja en cero
+               if (borrado){
+                    res.writeHead(200,{'Content-Type:':'application/json'});//res.writeHead(200) se puede poner esto y el renglon de abajo solo 
+                    res.end(JSON.stringify({message:"Materia eliminada"})); // res.end() y no se muestra mensaje de eliminacion exisotsa
+                }
+               else 
+               {
+                res.writeHead(404,{'Content-Type:':'application/json'}); 
+                res.end(JSON.stringify({message: "MAteria no encontrada"}));
+               }  
 
-        res.writeHead(204);
-        res.end();
+            })
+            .catch(err => { //control mensajes de error... esto puede no ir
+                console.error('');
+                res.writeHead(500,{'Content-Type':'applicaiont/json'});
+                res.end(JSON.stringify({message:"Error del servidor"}))
+             });
     }
-    
-    else {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: "Ruta no encontrada" }));
-    }
-});
+            
+
+        
+   
 
 servidor.listen(3000, () => {
     console.log("Servidor ejecutándose en el puerto 3000");
+});
 });
