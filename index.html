@@ -64,11 +64,9 @@
             });
         });
    
-        function actualizarListaMaterias(materias) {
+    function actualizarListaMaterias(materias) {
     const listaMaterias = document.getElementById('listaMaterias');
     listaMaterias.innerHTML = '';
-
-
     // Verifica si materias es un array
     if (Array.isArray(materias)) {
         materias.forEach(materia => {
