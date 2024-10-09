@@ -5,11 +5,16 @@ host: 'localhost',
 dialect: 'mysql'
 });
 // Probar la conexión
-sequelize.authenticate()
-.then(() => {
-console.log('Conexión exitosa a la base de datos MySQL.');
-})
-.catch(err => {
-console.error('No se pudo conectar:', err);
-});
-module.exports = sequelize;
+
+async function testConnection() {
+    try {
+      await sequelize.authenticate();
+      console.log('Conexión a la base de datos establecida con éxito.');
+    } catch (error) {
+      console.error('No se pudo conectar a la base de datos:', error);
+    }
+  }
+  
+  testConnection();
+  
+  module.exports = sequelize;
