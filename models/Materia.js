@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./alumnos_db');
+const sequelize = require('../alumnos_bd');
 // Definir la clase 'Materia'
 const Materia = sequelize.define('Materia', {
 id: {

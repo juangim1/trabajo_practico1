@@ -13,69 +13,107 @@
             <label for="nombre">Nombre de la Materia:</label>
             <input type="text" id="nombre" name="nombre" required>
 
+
+
+
             <label for="cantidad">Cantidad de Estudiantes:</label>
             <input type="number" id="cantidad" name="cantidad" min="0" max="100" required>
 
+
+
+
             <button type="submit">Agregar Materia</button>
         </form>
+        <button id="eliminarTodas">Eliminar Todas las Materias</button>
         <h2>Listado de Materias</h2>
         <ul id="listaMaterias"></ul>
     </div>
     <script>
         document.getElementById('materiasForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+           
             const nombre = document.getElementById('nombre').value;
             const cantidad = parseInt(document.getElementById('cantidad').value);
-            
+           
             if (cantidad < 0 || cantidad > 100) {
                 alert('La cantidad de estudiantes debe estar entre 0 y 100.');
                 return;
             }
-            
+           
             const materia = { nombre, cantidad };
-            
+           
             fetch('http://localhost:3000/materias', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(materia)
             }).then(response => response.json())
               .then(data => {
-                  actualizarListaMaterias(data);
+                  cargarMaterias();  // Cargar la lista de materias de nuevo después de agregar una nueva
                   document.getElementById('materiasForm').reset();  
               });
         });
-    
-        function actualizarListaMaterias(materias) {
-            const listaMaterias = document.getElementById('listaMaterias');
-            listaMaterias.innerHTML = '';
-            materias.forEach(materia => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    ${materia.nombre} - ${materia.cantidad} estudiantes
-                    <button onclick="eliminarMateria(${materia.id})">Eliminar</button>
-                `;
-                listaMaterias.appendChild(li);
+
+
+
+
+        document.getElementById('eliminarTodas').addEventListener('click', function() {
+            fetch('http://localhost:3000/materias', {
+                method: 'DELETE'
+            }).then(() => {
+                cargarMaterias();
             });
-        }
-    
-        function cargarMaterias() {
-            fetch('http://localhost:3000/materias')
-                .then(response => response.json())
-                .then(materias => {
-                    actualizarListaMaterias(materias);
-                });
-        }
-        
+        });
+   
+        function actualizarListaMaterias(materias) {
+    const listaMaterias = document.getElementById('listaMaterias');
+    listaMaterias.innerHTML = '';
+
+
+    // Verifica si materias es un array
+    if (Array.isArray(materias)) {
+        materias.forEach(materia => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                ${materia.nombre} - ${materia.cantidad} estudiantes
+                <button onclick="eliminarMateria(${materia.id})">Eliminar</button>
+            `;
+            listaMaterias.appendChild(li);
+        });
+    } else {
+        console.error('Error: La respuesta no es un array', materias);
+        listaMaterias.innerHTML = '<li>No se encontraron materias.</li>';
+    }
+}
+   
+function cargarMaterias() {
+    fetch('http://localhost:3000/materias')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta de la red');
+            }
+            return response.json();
+        })
+        .then(materias => {
+            console.log('Materias obtenidas:', materias); // Log para ver qué materias se obtienen.
+            actualizarListaMaterias(materias);
+        })
+        .catch(error => {
+            console.error('Hubo un problema con la carga de materias:', error);
+        });
+}
+       
         function eliminarMateria(id) {
             fetch(`http://localhost:3000/materias/${id}`, {
                 method: 'DELETE'
             }).then(() => {
-                cargarMaterias(); 
+                cargarMaterias();
             });
         }
-    
-        cargarMaterias(); 
+   
+        cargarMaterias();
     </script>    
 </body>
 </html>
+
+
+
